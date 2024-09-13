@@ -6,12 +6,23 @@ import PageOne from './PageOne';
 import PageTwo from './PageTwo';
 import PageThree from './PageThree'; // New page
 import Icon from 'react-native-vector-icons/FontAwesome';
+import PageFour from './PageFour';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
 
 const Tab = createBottomTabNavigator();
 
 const Navigation: React.FC = () => {
   return (
     <NavigationContainer>
+      {/* <Stack.Navigator>
+        <Stack.Screen
+          name="Home"
+          component={PageFour}
+          // options={{title: 'Welcome'}}
+        />
+      </Stack.Navigator> */}
       <Tab.Navigator
         screenOptions={({route}) => ({
           tabBarIcon: ({focused, color, size}) => {
@@ -67,6 +78,11 @@ const Navigation: React.FC = () => {
           component={PageThree}
           options={{title: 'Translate Video'}}
         />
+        {/* <Tab.Screen
+          name="PageFour"
+          component={PageFour}
+          options={{title: 'Video'}}
+        /> */}
         <Tab.Screen
           name="Settings"
           component={PageTwo}

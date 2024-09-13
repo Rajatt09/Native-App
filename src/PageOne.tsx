@@ -6,12 +6,12 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
-  Animated,
   Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const PageOne = () => {
+  const [activeTab, setActiveTab] = useState('text'); // 'text' or 'voice'
   const [text, setText] = useState('');
 
   const handleConvert = () => {
@@ -19,41 +19,72 @@ const PageOne = () => {
     // alert('Convert function will be implemented here.');
   };
 
+  const handleVoiceCapture = () => {
+    // Logic for capturing voice
+    // alert('Voice capture function will be implemented here.');
+  };
+
   return (
     <ScrollView
       style={styles.container}
       contentContainerStyle={styles.contentContainer}>
       <View style={styles.header}>
-        <Text style={styles.title}>Text to Indian Sign Language (ISL)</Text>
-        <Text style={styles.description}>
-          Enter the text you want to convert into Indian Sign Language (ISL).
-          Use the button below to perform the conversion.
-        </Text>
-      </View>
-
-      <View style={styles.sectionContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Type your text here..."
-          placeholderTextColor="#9e9e9e"
-          value={text}
-          onChangeText={setText}
-        />
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            handleConvert();
-          }}>
-          <Icon name="exchange" size={22} color="#fff" style={styles.icon} />
-          <Text style={styles.buttonText}>Convert to ISL</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.footerContainer}>
-        <Text style={styles.footerText}>
-          Discover more about our platform and explore the features designed to
-          assist you.
-        </Text>
+        <View style={styles.tabContainer}>
+          <TouchableOpacity
+            style={[styles.tab, activeTab === 'text' && styles.activeTab]}
+            onPress={() => setActiveTab('text')}>
+            <Text style={styles.tabText}>Text to ISL</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.tab, activeTab === 'voice' && styles.activeTab]}
+            onPress={() => setActiveTab('voice')}>
+            <Text style={styles.tabText}>Voice to ISL</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.videoBox}>
+          <Icon name="video-camera" size={50} color="#9e9e9e" />
+          <Text style={styles.videoText}>No Video</Text>
+        </View>
+        {activeTab === 'text' && (
+          <View style={styles.sectionContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Type your text here..."
+              placeholderTextColor="#9e9e9e"
+              value={text}
+              onChangeText={setText}
+            />
+            <TouchableOpacity style={styles.button} onPress={handleConvert}>
+              <Icon
+                name="exchange"
+                size={22}
+                color="#fff"
+                style={styles.icon}
+              />
+              <Text style={styles.buttonText}>Convert to ISL</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        {activeTab === 'voice' && (
+          <View style={styles.sectionContainer}>
+            <View style={styles.signalStrengthContainer}>
+              <Text style={styles.buttonText}>Signal strength :</Text>
+              <View style={styles.signalStrengthLine} />
+            </View>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleVoiceCapture}>
+              <Icon name="microphone" size={22} color="#fff" />
+              <Text style={styles.buttonText}>Capture Voice</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        <View style={styles.footerContainer}>
+          <Text style={styles.footerText}>
+            Discover more about our platform and explore the features designed
+            to assist you.
+          </Text>
+        </View>
       </View>
     </ScrollView>
   );
@@ -69,36 +100,47 @@ const styles = StyleSheet.create({
   },
   header: {
     padding: 20,
-    backgroundColor: '#1f1f1f', // Darker background for header
-    borderRadius: 0,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 10},
-    shadowOpacity: 0.3,
-    shadowRadius: 20,
-    elevation: 5,
     width: '100%',
     alignItems: 'center',
   },
-  title: {
-    fontSize: 36,
-    fontWeight: '700',
-    color: '#00bcd4', // Accent color
-    textAlign: 'center',
-    marginBottom: 10,
+  tabContainer: {
+    flexDirection: 'row',
+    marginBottom: 20,
   },
-  description: {
-    fontSize: 18,
-    color: '#e0e0e0', // Light gray
-    textAlign: 'center',
+  tab: {
+    paddingVertical: 10,
     paddingHorizontal: 20,
+    borderRadius: 20,
+    backgroundColor: '#333',
+    marginHorizontal: 5,
+  },
+  activeTab: {
+    backgroundColor: '#00bcd4', // Accent color for active tab
+  },
+  tabText: {
+    color: '#fff',
+    fontSize: 16,
+  },
+  videoBox: {
+    width: '100%',
+    height: 400,
+    backgroundColor: '#1e1e1e',
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 35,
+    position: 'relative', // Position relative to allow absolute positioning of the cross icon
+  },
+  videoText: {
+    color: '#9e9e9e',
+    fontSize: 16,
   },
   sectionContainer: {
-    padding: 20,
     flex: 1,
     justifyContent: 'center',
   },
   input: {
-    width: '100%',
+    minWidth: '100%',
     borderColor: '#ddd', // Light border color
     borderWidth: 1,
     borderRadius: 10,
@@ -117,13 +159,27 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     justifyContent: 'center',
     elevation: 5, // Shadow for button
-    // transform: [{ scale: scaleAnim }], // Animated scale
   },
   buttonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
     marginLeft: 12,
+  },
+  button2: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#00bcd4', // Primary button color
+    padding: 15,
+    borderRadius: 50,
+    justifyContent: 'center',
+    elevation: 5, // Shadow for button
+  },
+  buttonText2: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+    marginLeft: 10,
   },
   icon: {
     marginRight: 12,
@@ -136,6 +192,21 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#757575',
     textAlign: 'center',
+  },
+  signalStrengthContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 12,
+    minWidth: '100%',
+    marginBottom: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  signalStrengthLine: {
+    width: '40%',
+    height: 10,
+    backgroundColor: '#00bcd4', // Signal strength color
+    borderRadius: 5,
   },
 });
 

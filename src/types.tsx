@@ -5,4 +5,5 @@ export type RootStackParamList = {
   PageOne: undefined;
   PageTwo: undefined;
   PageThree: undefined;
+  PageFour: undefined;
 };

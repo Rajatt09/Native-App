@@ -9,8 +9,14 @@ import {
   ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from './types';
 
-const PageThree = () => {
+type HomePageProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'PageThree'>;
+};
+
+const PageThree: React.FC<HomePageProps> = ({navigation}) => {
   return (
     <ScrollView
       style={styles.container}
@@ -18,8 +24,7 @@ const PageThree = () => {
       <View style={styles.header}>
         <Text style={styles.title}>Translate Video to Sign Language</Text>
         <Text style={styles.description}>
-          Upload or record a video, and we will translate it into Indian Sign
-          Language (ISL).
+          Record a video and it will be translated into audio and text.
         </Text>
       </View>
 
@@ -27,10 +32,10 @@ const PageThree = () => {
         <TouchableOpacity
           style={[styles.button]}
           onPress={() => {
-            // Handle video upload
+            // navigation.navigate('PageFour', {conversionType: 'text'});
           }}>
-          <Icon name="upload" size={22} color="#fff" style={styles.icon} />
-          <Text style={styles.buttonText}>Upload Video</Text>
+          <Icon name="file-text" size={22} color="#fff" style={styles.icon} />
+          <Text style={styles.buttonText}>Video to Text </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -38,13 +43,8 @@ const PageThree = () => {
           onPress={() => {
             // Handle video record
           }}>
-          <Icon
-            name="video-camera"
-            size={22}
-            color="#fff"
-            style={styles.icon}
-          />
-          <Text style={styles.buttonText}>Record Video</Text>
+          <Icon name="soundcloud" size={22} color="#fff" style={styles.icon} />
+          <Text style={styles.buttonText}>Video to Audio</Text>
         </TouchableOpacity>
       </View>
 
