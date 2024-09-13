@@ -7,6 +7,7 @@ import {
   Animated,
   ScrollView,
   Platform,
+  ImageBackground,
 } from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -17,35 +18,19 @@ type HomePageProps = {
 };
 
 const HomeScreen: React.FC<HomePageProps> = ({navigation}) => {
-  // Animation state for button press
-  const [scaleAnim] = React.useState(new Animated.Value(1));
-
-  const animateButton = () => {
-    Animated.sequence([
-      Animated.spring(scaleAnim, {
-        toValue: 1.1,
-        friction: 2,
-        useNativeDriver: true,
-      }),
-      Animated.spring(scaleAnim, {
-        toValue: 1,
-        friction: 2,
-        useNativeDriver: true,
-      }),
-    ]).start();
-  };
-
   return (
     <ScrollView
       style={styles.container}
       contentContainerStyle={styles.contentContainer}>
-      <View style={styles.header}>
+      <ImageBackground
+        source={{uri: 'https://example.com/background.jpg'}}
+        style={styles.header}>
         <Text style={styles.title}>Sign Language Translator</Text>
         <Text style={styles.description}>
           Convert text and video to Indian Sign Language (ISL) and vice versa.
           Use the sections below to get started.
         </Text>
-      </View>
+      </ImageBackground>
 
       <View style={styles.sectionContainer}>
         <View style={styles.section}>
@@ -60,11 +45,8 @@ const HomeScreen: React.FC<HomePageProps> = ({navigation}) => {
           <Text style={styles.sectionTitle}>Features</Text>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
-              style={[styles.button, {transform: [{scale: scaleAnim}]}]}
-              onPress={() => {
-                animateButton();
-                navigation.navigate('PageOne');
-              }}>
+              style={[styles.button, styles.gradientButton]}
+              onPress={() => navigation.navigate('PageOne')}>
               <Icon
                 name="language"
                 size={22}
@@ -75,15 +57,8 @@ const HomeScreen: React.FC<HomePageProps> = ({navigation}) => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={[
-                styles.button,
-                styles.altButton,
-                {transform: [{scale: scaleAnim}]},
-              ]}
-              onPress={() => {
-                animateButton();
-                navigation.navigate('PageThree');
-              }}>
+              style={[styles.button, styles.altButton]}
+              onPress={() => navigation.navigate('PageThree')}>
               <Icon
                 name="video-camera"
                 size={22}
@@ -94,15 +69,9 @@ const HomeScreen: React.FC<HomePageProps> = ({navigation}) => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={[
-                styles.button,
-                styles.infoButton,
-                {transform: [{scale: scaleAnim}]},
-              ]}
-              onPress={() => {
-                animateButton();
-                // Navigate to Learn About ISL
-              }}>
+              style={[styles.button, styles.infoButton]}
+              // onPress={() => navigation.navigate('LearnISL')}
+            >
               <Icon
                 name="info-circle"
                 size={22}
@@ -129,84 +98,92 @@ const HomeScreen: React.FC<HomePageProps> = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#121212', // Dark background
+    backgroundColor: '#1c1c1c', // Dark background with slight variation
   },
   contentContainer: {
-    paddingBottom: Platform.OS === 'ios' ? 40 : 10, // Extra padding for bottom bar
+    paddingBottom: Platform.OS === 'ios' ? 40 : 10,
   },
   header: {
-    padding: 20,
-    backgroundColor: '#1f1f1f', // Darker background for header
+    padding: 30,
+    backgroundColor: 'rgba(0,0,0,0.8)', // Transparent black over image
     borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 10},
-    shadowOpacity: 0.3,
-    shadowRadius: 20,
-    elevation: 5,
     width: '100%',
     alignItems: 'center',
     marginBottom: 20,
+    overflow: 'hidden',
   },
   title: {
-    fontSize: 36,
-    fontWeight: '700',
-    color: '#00bcd4', // Accent color
+    fontSize: 38,
+    fontWeight: '800',
+    color: '#00e5ff', // Lighter accent color
     textAlign: 'center',
-    marginBottom: 10,
+    marginBottom: 12,
+    textShadowColor: '#000',
+    textShadowOffset: {width: 2, height: 2},
+    textShadowRadius: 10,
   },
   description: {
     fontSize: 18,
-    color: '#e0e0e0', // Light gray
+    color: '#f5f5f5',
     textAlign: 'center',
     paddingHorizontal: 20,
   },
   sectionContainer: {
-    padding: 20,
+    paddingHorizontal: 20,
     flex: 1,
-    justifyContent: 'space-between',
   },
   section: {
     borderRadius: 15,
-    padding: 20,
+    padding: 25,
     marginVertical: 10,
-    borderColor: '#00bcd4',
-    borderWidth: 2,
-    backgroundColor: '#1e1e1e', // Slightly lighter dark background
+    backgroundColor: '#2c2c2c', // A bit brighter dark color for contrast
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 10},
     shadowOpacity: 0.3,
     shadowRadius: 20,
+    elevation: 10,
+    borderColor: '#00e5ff',
+    borderWidth: 1,
   },
   sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: '#00bcd4',
+    fontSize: 26,
+    fontWeight: '700',
+    color: '#00e5ff',
     marginBottom: 10,
+    textShadowColor: '#000',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 8,
   },
   sectionContent: {
     fontSize: 16,
-    color: '#e0e0e0',
+    color: '#cccccc',
   },
   buttonContainer: {
     alignItems: 'center',
+    marginTop: 20,
   },
   button: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#00bcd4', // Primary button color
     paddingVertical: 15,
     paddingHorizontal: 30,
     borderRadius: 25,
     marginVertical: 10,
-    width: '90%',
+    width: '100%',
     justifyContent: 'center',
-    elevation: 5, // Shadow for button
+    elevation: 5,
+  },
+  gradientButton: {
+    backgroundColor: 'linear-gradient(90deg, #00e5ff, #ff4081)',
+    shadowColor: '#ff4081',
   },
   altButton: {
-    backgroundColor: '#ff5722', // Alternate button color
+    backgroundColor: '#ff5722',
+    shadowColor: '#ff5722',
   },
   infoButton: {
-    backgroundColor: '#4caf50', // Info button color
+    backgroundColor: '#4caf50',
+    shadowColor: '#4caf50',
   },
   buttonText: {
     color: '#fff',

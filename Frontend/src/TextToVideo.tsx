@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const PageOne = () => {
+const TextToVideo = () => {
   const [activeTab, setActiveTab] = useState('text'); // 'text' or 'voice'
   const [text, setText] = useState('');
 
@@ -210,4 +210,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PageOne;
+export default TextToVideo;
